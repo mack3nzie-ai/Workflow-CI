@@ -1,15 +1,17 @@
-name: telco_churn_ci
-channels:
-  - defaults
-  - conda-forge
-dependencies:
-  - python=3.12.7
-  - pip
-  - pandas
-  - numpy
-  - scikit-learn
-  - matplotlib
-  - seaborn
-  - joblib
-  - pip:
-      - mlflow==2.19.0
+name: Telco_Churn_CI
+
+python_env: python_env.yaml
+
+entry_points:
+  main:
+    parameters:
+      train_data: {type: str, default: "dataset_preprocessed/telco_churn_train.csv"}
+      test_data: {type: str, default: "dataset_preprocessed/telco_churn_test.csv"}
+      n_estimators: {type: int, default: 100}
+      max_depth: {type: int, default: 10}
+    command: |
+      python modelling.py \
+        --train-data {train_data} \
+        --test-data {test_data} \
+        --n-estimators {n_estimators} \
+        --max-depth {max_depth}
