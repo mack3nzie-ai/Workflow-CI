@@ -23,6 +23,8 @@ from sklearn.model_selection import train_test_split
 import joblib
 import os
 import warnings
+# Set MLflow tracking to local
+mlflow.set_tracking_uri("file:./mlruns")
 warnings.filterwarnings('ignore')
 
 # Set MLflow tracking URI ke localhost

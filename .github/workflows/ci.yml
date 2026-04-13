@@ -21,16 +21,16 @@ jobs:
     - name: Install dependencies
       run: |
         pip install --upgrade pip
-        pip install mlflow==2.19.0
+        pip install -r MLProject/requirements.txt
         
-    - name: Run MLflow Project
+    - name: Run training script
       run: |
         cd MLProject
-        mlflow run . \
-          -P train_data=dataset_preprocessed/telco_churn_train.csv \
-          -P test_data=dataset_preprocessed/telco_churn_test.csv \
-          -P n_estimators=200 \
-          -P max_depth=10
+        python modelling.py \
+          --train-data dataset_preprocessed/telco_churn_train.csv \
+          --test-data dataset_preprocessed/telco_churn_test.csv \
+          --n-estimators 200 \
+          --max-depth 10
           
     - name: Upload artifacts to GitHub
       uses: actions/upload-artifact@v4
