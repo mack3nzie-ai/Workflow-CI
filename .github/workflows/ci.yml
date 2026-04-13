@@ -1,0 +1,41 @@
+name: CI_MLflow_Project
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  train-and-upload:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12.7'
+        
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install mlflow==2.19.0 pandas numpy scikit-learn joblib
+        
+    - name: Run MLflow Project
+      run: |
+        cd MLProject
+        mlflow run . \
+          -P train_data=dataset_preprocessed/telco_churn_train.csv \
+          -P test_data=dataset_preprocessed/telco_churn_test.csv \
+          -P n_estimators=200 \
+          -P max_depth=10
+          
+    - name: Upload artifacts to GitHub
+      uses: actions/upload-artifact@v4
+      with:
+        name: mlflow-artifacts
+        path: |
+          MLProject/mlruns/
+          MLProject/artifacts/
